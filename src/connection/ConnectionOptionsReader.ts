@@ -1,4 +1,3 @@
-import appRootPath from "app-root-path"
 import path from "path"
 
 import { DataSourceOptions } from "../data-source/DataSourceOptions"
@@ -258,7 +257,7 @@ export class ConnectionOptionsReader {
      * Gets directory where configuration file should be located.
      */
     protected get baseDirectory(): string {
-        return this.options?.root ?? appRootPath.path
+        return this.options?.root ?? PlatformTools.getAppRootPath()
     }
 
     /**

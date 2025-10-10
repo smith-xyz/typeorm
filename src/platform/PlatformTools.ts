@@ -202,6 +202,34 @@ export class PlatformTools {
     }
 
     /**
+     * Gets the application root path.
+     * Lazy-loads app-root-path to avoid issues with bundlers that don't support webpack-specific globals.
+     * Falls back to process.cwd() if app-root-path is unavailable.
+     *
+     * @returns The application root path
+     */
+    static getAppRootPath(): string {
+        try {
+            // Dynamically require app-root-path only when needed
+            // This prevents immediate execution issues in environments like Expo Web/Metro
+            // eslint-disable-next-line @typescript-eslint/no-require-imports
+            const appRootPath = require("app-root-path")
+            return appRootPath.path
+        } catch {
+            // Fallback to process.cwd() if app-root-path is not available
+            // This handles cases where we're in a browser-like environment (Expo Web, React Native Web)
+            if (
+                typeof process !== "undefined" &&
+                typeof process.cwd === "function"
+            ) {
+                return process.cwd()
+            }
+            // Final fallback for pure browser environments
+            return "/"
+        }
+    }
+
+    /**
      * Highlights sql string to be printed in the console.
      */
     static highlightSql(sql: string) {

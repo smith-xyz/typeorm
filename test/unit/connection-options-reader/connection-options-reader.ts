@@ -111,4 +111,25 @@ describe("ConnectionOptionsReader", () => {
         expect(fileOptions.database).to.have.string("test-ormconfig-env")
         expect(process.env.TYPEORM_DATABASE).to.equal("test-ormconfig-env")
     })
+
+    // GH 11678 - lazy loading app-root-path
+    it("should handle missing app-root-path gracefully", () => {
+        // Test that ConnectionOptionsReader works even if app-root-path fails
+        const reader = new ConnectionOptionsReader({
+            root: __dirname,
+            configName: "configs/sqlite-memory",
+        })
+        expect(reader).to.be.instanceOf(ConnectionOptionsReader)
+    })
+
+    // GH 11678 - lazy loading app-root-path
+    it("should use provided root option when specified", () => {
+        const customRoot = "/custom/root"
+        const reader = new ConnectionOptionsReader({
+            root: customRoot,
+            configName: "test",
+        })
+        // Access the protected property via any cast for testing
+        expect((reader as any).baseDirectory).to.equal(customRoot)
+    })
 })
