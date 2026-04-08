@@ -1,7 +1,7 @@
 import "reflect-metadata"
 import { expect } from "chai"
 
-import { DataSource } from "../../../src/data-source/DataSource"
+import type { DataSource } from "../../../src/data-source/DataSource"
 import {
     closeTestingConnections,
     createTestingConnections,
@@ -16,13 +16,12 @@ import { Tag } from "./entity/Tag"
 describe("deferrable foreign key constraint > many-to-many (#11739)", () => {
     describe("bidirectional with deferrable on both sides", () => {
         let connections: DataSource[]
-        before(
-            async () =>
-                (connections = await createTestingConnections({
-                    entities: [Post, Category],
-                    enabledDrivers: ["better-sqlite3", "postgres", "sap"],
-                })),
-        )
+        before(async () => {
+            connections = await createTestingConnections({
+                entities: [Post, Category],
+                enabledDrivers: ["better-sqlite3", "postgres", "sap"],
+            })
+        })
         beforeEach(() => reloadTestingDatabases(connections))
         after(() => closeTestingConnections(connections))
 
@@ -91,13 +90,12 @@ describe("deferrable foreign key constraint > many-to-many (#11739)", () => {
 
     describe("unidirectional with deferrable on owning side only", () => {
         let connections: DataSource[]
-        before(
-            async () =>
-                (connections = await createTestingConnections({
-                    entities: [Article, Tag],
-                    enabledDrivers: ["better-sqlite3", "postgres", "sap"],
-                })),
-        )
+        before(async () => {
+            connections = await createTestingConnections({
+                entities: [Article, Tag],
+                enabledDrivers: ["better-sqlite3", "postgres", "sap"],
+            })
+        })
         beforeEach(() => reloadTestingDatabases(connections))
         after(() => closeTestingConnections(connections))
 
