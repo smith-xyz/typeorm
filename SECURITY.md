@@ -51,6 +51,11 @@ Bugs in these guarantees are vulnerabilities and we want to hear about them. In 
 - Database-derived content escaping its context in TypeORM's output: prototype pollution
   or code execution while processing results, or injection into code, files, or commands
   generated from database state.
+- Amplification of an existing prototype-pollution primitive: object iteration in
+  query-building, result-processing, or code-generation paths must not pick up inherited
+  keys, so that a polluted runtime cannot alter generated queries or emitted code through
+  TypeORM. (The pollution source itself remains a vulnerability in whatever introduced
+  it; such reports are assessed at reduced severity.)
 
 ### What TypeORM does not guarantee
 
